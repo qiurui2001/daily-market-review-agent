@@ -1,0 +1,5 @@
+# Normalize line endings for a cross-platform public repo
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jsonl text eol=lf
