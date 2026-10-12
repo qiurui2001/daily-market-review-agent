@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from crewai import Task
 
-from agents import analyzer, fact_checker, researcher, review_validator, writer
+from agents import analyzer, fact_checker, paper_trader, researcher, review_validator, writer
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 任务 1：信息收集
@@ -158,7 +158,37 @@ analyzer_task = Task(
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 任务 5：撰写（含 K 线图）
+# 任务 5：模拟交易（10 万美元模拟盘，收盘调仓，仅输出表格、不发邮件）
+# ══════════════════════════════════════════════════════════════════════════════
+paper_trade_task = Task(
+    description=(
+        "你是 10 万美元模拟账户的交易员，请在 {today} 美股收盘后做一次调仓。**只输出交易表格，不发任何邮件**。\n\n"
+        "步骤：\n"
+        "1. 先调用 paper_portfolio 查看当前现金、持仓与盈亏。\n"
+        "2. 阅读上下文里的【盘面分析】与【往期预测验证】结论，确定今日主线（进攻/防御）与退潮方向。\n"
+        "3. 用 get_quote 查询候选标的（美股个股或 ETF 代码，如 SPY 标普500ETF、QQQ 纳指100ETF、"
+        "SMH 半导体ETF、XLK 科技ETF、XLE 能源ETF、TLT 长债ETF；个股如 AAPL、NVDA、MSFT 等）的收盘价。\n"
+        "4. 决策并执行：paper_buy(code, amount, reason) 买入、paper_sell(code, ratio, reason) 卖出。\n"
+        "5. 最后调用 paper_report 生成报表（交易流水 / 当前持仓 / 账户汇总 / **净资产曲线与逐日收益**），"
+        "并把返回内容**作为最终输出原样保留**（尤其不得删除其中的表格与 `![...](...)` 图片行）。\n\n"
+        "交易纪律（务必遵守）：\n"
+        "- 持仓 2–4 个标的；**单票不超过总资产 30%**；**总仓位不超过 80%**；\n"
+        "- 优先跟随当日**强势主线**（行业 ETF 或龙头个股），**回避**破位/退潮方向；\n"
+        "- 止损：个股浮亏约 8% 或跌破分析给出的关键支撑 → 卖出；\n"
+        "- 理由一句话（≤20 字）；无可操作机会时**空仓或维持**并说明。\n\n"
+        "禁止：编造行情、满仓单票、无理由频繁交易。"
+    ),
+    expected_output=(
+        "一份模拟交易报表 MARKDOWN：交易流水表（时间/代码/名称/方向/价格/数量/金额/仓位%/持有状态/盈亏/理由）"
+        "+ 当前持仓表 + 账户汇总（初始资金、现金、持仓市值、总资产、收益率）+ 净资产曲线。"
+    ),
+    agent=paper_trader,
+    context=[analyzer_task, review_task],
+    output_file="paper/us_trade_{today}.md",
+)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 任务 6：撰写（含 K 线图）
 # ══════════════════════════════════════════════════════════════════════════════
 writer_task = Task(
     description=(
@@ -205,7 +235,7 @@ writer_task = Task(
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 任务 6：交付（独立成任务，确保一定调用发送工具）
+# 任务 7：交付（独立成任务，确保一定调用发送工具）
 # ══════════════════════════════════════════════════════════════════════════════
 deliver_task = Task(
     description=(
@@ -226,4 +256,4 @@ deliver_task = Task(
 )
 
 TASKS = [researcher_task, fact_check_task, review_task, analyzer_task,
-         writer_task, deliver_task]
+         paper_trade_task, writer_task, deliver_task]

@@ -77,8 +77,8 @@ Read the full reasoning in **[METHODOLOGY.md](METHODOLOGY.md)** (or [中文](预
 ## How it works
 
 ```
-Researcher → Fact-checker → Review-validator → Analyst → Writer → Deliver
-   gather       独立复核/防幻觉    检索往期+确定性核验   量价/轮动/结构   撰写+配图   存档+发信
+Researcher → Fact-checker → Review-validator → Analyst → Paper-trader → Writer → Deliver
+   gather       独立复核/防幻觉    检索往期+确定性核验   量价/轮动/结构   10万美元模拟盘   撰写+配图   存档+发信
       │
       └── every prediction ──► prediction_ledger.jsonl (hash-chained) ──► auto-scored next day
                                                                     └──► Live Track Record
@@ -90,7 +90,8 @@ Researcher → Fact-checker → Review-validator → Analyst → Writer → Deli
 | 2 | **Fact-checker** | Re-fetches data and cross-verifies every number; flags hallucinations |
 | 3 | **Review-validator** | Pulls past predictions, **scores them deterministically**, adds attribution |
 | 4 | **Analyst** | Price/volume, rotation, internals, support/resistance, scenarios & probabilities |
-| 5 | **Writer** | Renders the report with K-line charts, files it, emails it |
+| 5 | **Paper-trader** | Runs a **$100,000 paper account** (US stocks/ETFs), trades at the close, keeps a trade log & equity curve |
+| 6 | **Writer** | Renders the report with K-line charts, files it, emails it |
 
 Deterministic, code-produced data (sector tables, charts, scoring) — the LLM only organizes and interprets.
 
@@ -103,6 +104,16 @@ Deterministic, code-produced data (sector tables, charts, scoring) — the LLM o
 7×24 news · earnings & Fed.
 
 Data sources (free, no API keys): Tencent quotes, Sina US K-line, Sina global, Eastmoney news, Bing search.
+
+---
+
+## 📝 Paper trading (simulated, $100,000)
+
+After the analysis, a **paper trader** runs a **$100,000 simulated account** on US stocks & ETFs
+(e.g. `SPY`, `QQQ`, `SMH`, `XLK`, `AAPL`, `NVDA`), trading at the **close price** and staying within
+discipline limits (2–4 positions, ≤30% per name, ≤80% gross exposure, ~8% stop). It keeps a full
+**trade log**, a **holdings table**, an **account summary**, and a **daily equity curve**. State lives
+in `paper/` (git-ignored).
 
 ---
 
