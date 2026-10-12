@@ -66,11 +66,11 @@ def _chain_hash(prev: str, date: str, payload: str) -> str:
     return hashlib.sha256(f"{prev}|{date}|{payload}".encode("utf-8")).hexdigest()
 
 
-def _load_records() -> list[dict]:
-    if not LEDGER_FILE.exists():
+def _load_records(path: Path = LEDGER_FILE) -> list[dict]:
+    if not path.exists():
         return []
     out = []
-    for line in LEDGER_FILE.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line:
             continue
@@ -84,15 +84,14 @@ def _load_records() -> list[dict]:
 # ──────────────────────────────────────────────────────────────────────────────
 # 提交（只追加）
 # ──────────────────────────────────────────────────────────────────────────────
-def commit_day(date: str) -> str:
-    """把某日报告里的预测提交进哈希链台账。同一天已提交则跳过（只追加，不覆盖）。"""
-    items = ledger.build_items_for_date(date)
+def commit(path: Path, date: str, items: list[dict], unit: str = "预测") -> str:
+    """通用：把某日的预测条目提交进指定哈希链台账。同一天已提交则跳过（只追加，不覆盖）。"""
     if not items:
-        return f"【未记录】{date} 无可提交的预测（报告缺失或无『后市预判』）。"
+        return f"【未记录】{date} 无可提交的{unit}（报告缺失或无『后市预判』）。"
 
-    records = _load_records()
+    records = _load_records(path)
     if any(r.get("date") == date for r in records):
-        return f"【已存在】{date} 的预测已提交过，跳过（只追加，不覆盖）。"
+        return f"【已存在】{date} 的{unit}已提交过，跳过（只追加，不覆盖）。"
 
     prev = records[-1]["hash"] if records else _GENESIS
     payload = _payload_hash(items)
@@ -106,18 +105,23 @@ def commit_day(date: str) -> str:
         "n": len(items),
         "items": items,
     }
-    LEDGER_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with LEDGER_FILE.open("a", encoding="utf-8") as f:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
-    return f"已提交 {date}：{len(items)} 条预测，链哈希 {chash[:16]}…"
+    return f"已提交 {date}：{len(items)} 条{unit}，链哈希 {chash[:16]}…"
+
+
+def commit_day(date: str) -> str:
+    """把某日**美股**报告里的预测提交进哈希链台账。同一天已提交则跳过（只追加，不覆盖）。"""
+    return commit(LEDGER_FILE, date, ledger.build_items_for_date(date), "预测")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # 校验
 # ──────────────────────────────────────────────────────────────────────────────
-def verify_chain() -> str:
+def verify_chain(path: Path = LEDGER_FILE) -> str:
     """重算哈希链，检测台账文件是否被篡改或断裂。"""
-    records = _load_records()
+    records = _load_records(path)
     if not records:
         return "【空台账】尚无已提交的预测记录。"
 
@@ -140,14 +144,15 @@ def verify_chain() -> str:
             f"链头 {str(head.get('hash'))[:16]}…；哈希链自洽，未被篡改。")
 
 
-def reconcile() -> str:
+def reconcile(path: Path = LEDGER_FILE, builder=None) -> str:
     """对比台账与当前报告文件，检测报告在提交后被改动（与台账不符）。"""
-    records = _load_records()
+    builder = builder or ledger.build_items_for_date
+    records = _load_records(path)
     if not records:
         return "【空台账】无可比对记录。"
     changed = []
     for r in records:
-        current = ledger.build_items_for_date(r["date"])
+        current = builder(r["date"])
         if _payload_hash(current) != r.get("payload"):
             changed.append(r["date"])
     if changed:
@@ -155,8 +160,8 @@ def reconcile() -> str:
     return "✅ 报告与台账一致，未发现提交后改动。"
 
 
-def chain_summary() -> str:
-    records = _load_records()
+def chain_summary(path: Path = LEDGER_FILE) -> str:
+    records = _load_records(path)
     if not records:
         return "【空台账】"
     n = len(records)

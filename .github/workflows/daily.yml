@@ -1,0 +1,67 @@
+name: Daily Market Review
+
+on:
+  schedule:
+    # After the US close (~16:00 ET), Mon–Fri. Adjust for your timezone.
+    # Also covers the crypto module (BTC/ETH daily review uses the closed UTC day).
+    - cron: "30 22 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-review
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    env:
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      DEEPSEEK_BASE_URL: ${{ secrets.DEEPSEEK_BASE_URL }}
+      DEEPSEEK_MODEL: ${{ secrets.DEEPSEEK_MODEL }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+      REPORT_TO_EMAIL: ${{ secrets.REPORT_TO_EMAIL }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      AGENT_VERBOSE: "false"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+          pip install -r requirements.txt
+
+      - name: Run daily US review
+        # Continue even if the LLM/network hiccups; the ledger + track record still update.
+        continue-on-error: true
+        run: python main.py --quiet
+
+      - name: Run daily crypto review (BTC/ETH)
+        continue-on-error: true
+        run: python crypto_main.py --quiet
+
+      - name: Refresh Live Track Record
+        run: python scripts/build_track_record.py
+
+      - name: Refresh Crypto Track Record
+        run: python scripts/build_crypto_track_record.py
+
+      - name: Commit report ledger + track record
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: daily review + track record ($(date -u +%F))"
+          git push

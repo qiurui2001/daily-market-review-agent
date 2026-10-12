@@ -106,6 +106,36 @@ Data sources (free, no API keys): Tencent quotes, Sina US K-line, Sina global, E
 
 ---
 
+## 🪙 Crypto module (BTC / ETH)
+
+The same verify-everything pipeline runs on crypto — but analyzes what actually moves it:
+**perpetual-swap derivatives**, not sector rotation.
+
+```bash
+python crypto_main.py                 # review the latest closed UTC day
+python crypto_main.py --date 2026-10-09
+```
+
+- **Derivatives & leverage (core):** funding rate (per-period + annualized), open interest & change,
+  long/short account & taker ratio, 24h long/short liquidations, futures basis.
+- **ETF flows:** US spot BTC/ETH ETFs (IBIT/FBTC/ETHA/FETH …) — price, moves, turnover, aggregate;
+  net creation/redemption flow cross-checked via news.
+- **Market structure:** total market cap, BTC/ETH dominance, **ETH/BTC ratio** (rotation gauge).
+- **Sentiment:** Fear & Greed index. **Price:** spot daily K (UTC), MA20/50/200, realized volatility.
+- **Actionable levels:** the report ends with a **long/short levels table** (entry / stop / take-profit /
+  size / trigger / invalidation), with machine-parseable levels that are auto-scored next UTC day.
+
+Predictions are committed to a **separate** hash-chained ledger (`crypto_ledger.jsonl`) and scored
+deterministically against Gate.io daily closes — same methodology, separate track record.
+
+Data sources (free, no keys): Gate.io (spot + futures), Binance public data mirror, CoinLore
+(global/dominance), Alternative.me (Fear & Greed), Bing search. See **[docs/CRYPTO.md](docs/CRYPTO.md)**.
+
+> Crypto is 7×24 and heavily leveraged — the module emphasizes **leverage crowding**
+> (funding / OI / liquidations) precisely because that is what drives the biggest moves.
+
+---
+
 ## Quick Start
 
 ```bash
@@ -134,6 +164,7 @@ to wire up the Live Demo and Telegram bot.
 | [docs/SETUP.md](docs/SETUP.md) | Configuration & operation |
 | [docs/SETUP-DEMO.md](docs/SETUP-DEMO.md) | Stand up the Live Demo link |
 | [docs/SETUP-TELEGRAM.md](docs/SETUP-TELEGRAM.md) | Stand up the Telegram bot |
+| [docs/CRYPTO.md](docs/CRYPTO.md) | Crypto (BTC/ETH) module — metrics, sources, usage |
 | [BUGFIX-LLM空响应重试.md](BUGFIX-LLM空响应重试.md) | Incident post-mortem |
 
 ---
@@ -143,6 +174,7 @@ to wire up the Live Demo and Telegram bot.
 - [x] Deterministic prediction scoring & tamper-evident ledger
 - [x] Live Track Record (auto-updated via GitHub Actions)
 - [x] Monthly self-review
+- [x] Crypto review module (BTC/ETH) with derivatives & separate track record
 - [ ] Public Live Demo + Telegram bot
 - [ ] Benchmark comparison (momentum / random / always-long)
 - [ ] Macro event calendar for shock-day tagging

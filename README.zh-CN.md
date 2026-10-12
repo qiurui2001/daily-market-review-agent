@@ -73,6 +73,35 @@ _每条预测都写入 `prediction_ledger.jsonl`（只追加、哈希链），�
 
 ---
 
+## 🪙 加密模块（BTC / ETH）
+
+同一套「一切可核验」的流水线也能跑加密——但分析的是真正驱动它的东西：**永续合约衍生品**，而非行业轮动。
+
+```bash
+python crypto_main.py                 # 复盘最近一个已收盘的 UTC 日
+python crypto_main.py --date 2026-10-09
+```
+
+- **衍生品与杠杆（核心）**：资金费率（每期 + 年化）、未平仓 OI 及变化、多空账户比/吃单比、
+  近 24h 多空爆仓、期货基差。
+- **ETF 资金面**：美国现货 BTC/ETH ETF（IBIT/FBTC/ETHA/FETH …）价格、涨跌、成交额与合计；
+  净申赎流量结合消息面交叉判断。
+- **市场结构**：总市值、BTC/ETH 主导率、**ETH/BTC 汇率**（轮动标尺）。
+- **情绪**：恐慌与贪婪指数。**价格**：现货日 K（UTC）、MA20/50/200、实现波动率。
+- **可执行点位**：报告末给出**多空点位表**（入场 / 止损 / 止盈 / 仓位 / 触发条件 / 证伪信号），
+  其中可证伪点位写成机器可解析格式，下一 UTC 日自动判分。
+
+加密预测写入**独立**的哈希链台账（`crypto_ledger.jsonl`），并用 Gate.io 日收盘价确定性判分——
+同一套方法论，独立的加密战绩。
+
+数据源全部免费、无需 Key：Gate.io（现货+永续）、Binance 公共数据镜像、CoinLore（全球/主导率）、
+Alternative.me（恐贪）、必应搜索。详见 **[docs/CRYPTO.md](docs/CRYPTO.md)**。
+
+> 加密 7×24 且高杠杆——本模块特别强调**杠杆拥挤度**（资金费率 / OI / 爆仓），
+> 因为这正是暴涨暴跌的燃料。
+
+---
+
 ## 快速开始
 
 ```bash
@@ -99,6 +128,7 @@ python scripts/build_track_record.py   # 刷新 Live Track Record
 | [docs/SETUP.md](docs/SETUP.md) | 配置与运行 |
 | [docs/SETUP-DEMO.md](docs/SETUP-DEMO.md) | 搭建在线 Demo |
 | [docs/SETUP-TELEGRAM.md](docs/SETUP-TELEGRAM.md) | 搭建 Telegram 机器人 |
+| [docs/CRYPTO.md](docs/CRYPTO.md) | 加密（BTC/ETH）模块：指标、数据源、用法 |
 | [BUGFIX-LLM空响应重试.md](BUGFIX-LLM空响应重试.md) | 线上问题复盘 |
 
 ---
@@ -108,6 +138,7 @@ python scripts/build_track_record.py   # 刷新 Live Track Record
 - [x] 确定性预测判分 + 防篡改台账
 - [x] Live Track Record（GitHub Actions 自动更新）
 - [x] 月度自省
+- [x] 加密（BTC/ETH）复盘模块（含衍生品指标与独立战绩）
 - [ ] 公开在线 Demo + Telegram 机器人
 - [ ] 基准对比（动量 / 随机 / 常多）
 - [ ] 宏观事件日历（用于冲击日标记）
