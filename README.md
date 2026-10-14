@@ -22,25 +22,9 @@ objectively against what the market actually did.
 ## 📊 Live Track Record
 
 <!-- TRACK_RECORD:START -->
-_Last updated: **2026-10-14** · auto-generated from `prediction_ledger.jsonl`_
+_📉 Collecting data — the live track record begins once the agent has run for a few days._
 
-**Overall hit rate: 29.4%** (95% CI 13–53) · **17 scored predictions · 1 trading day**
-
-| Capability | Hit rate | n |
-|---|---|---|
-| Direction | 25% | 12 |
-| Sector | 40% | 5 |
-
-**Latest calls**
-
-| Date | Instrument | Call | Result |
-|---|---|---|---|
-| 2026-10-13 | S&P 500 | 🟡   中性（基准）  ：区间震荡、结构分化延续     48%     标普 77… | ⏳ Pending |
-| 2026-10-13 | S&P 500 | 🔴   悲观  ：回踩确认弱势     30%       标普500 收盘跌破 7… | ⏳ Pending |
-| 2026-10-13 | Nasdaq | 纳指下看 26959（MA20） | ⏳ Pending |
-| 2026-10-13 | S&P 500 | 🟢   乐观  ：突破创新高     22%       标普500 收盘站稳 78… | ⏳ Pending |
-| 2026-10-13 | S&P 500 | 未来 1–2 周定性：以「区间 + CPI 定向」为主线 | ⏳ Pending |
-| 2026-10-13 | S&P 500 | 个人把短期风险略偏空一侧（悲观 30%   乐观 22%）  ，理由：①量能三重收缩… | ⏳ Pending |
+_Every prediction is committed to `prediction_ledger.jsonl` (append-only, hash-chained) and scored automatically against what the market actually did._
 <!-- TRACK_RECORD:END -->
 
 <details>
