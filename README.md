@@ -22,27 +22,9 @@ objectively against what the market actually did.
 ## 📊 Live Track Record
 
 <!-- TRACK_RECORD:START -->
-_Last updated: **2026-10-15** · auto-generated from `prediction_ledger.jsonl`_
+_📉 Collecting data — the live track record begins once the agent has run for a few days._
 
-**Overall hit rate: 40.0%** (95% CI 23–59) · **25 scored predictions · 2 trading days**
-
-| Capability | Hit rate | n |
-|---|---|---|
-| Direction | 57% | 14 |
-| Sector | 17% | 6 |
-| Event | 0% | 3 |
-| Risk | 50% | 2 |
-
-**Latest calls**
-
-| Date | Instrument | Call | Result |
-|---|---|---|---|
-| 2026-10-14 | S&P 500 | 遵循往期校准：  VIX 20 体制下，基准偏「破位/方向延续」，不设「区间磨底」为… | ⏳ Pending |
-| 2026-10-14 | S&P 500 | 🟢 乐观 25%｜触发即做多 | ⏳ Pending |
-| 2026-10-14 | S&P 500 | 激活条件  ：  标普500 站上 7733   且收盘保住 | ⏳ Pending |
-| 2026-10-14 | Nasdaq | 纳指站上 27055 | ⏳ Pending |
-| 2026-10-14 | S&P 500 | VIX 回落至 20 下方 | ⏳ Pending |
-| 2026-10-14 | S&P 500 | 路径  ：超卖反弹，标普收复 MA20→挑战 7769 | ⏳ Pending |
+_Every prediction is committed to `prediction_ledger.jsonl` (append-only, hash-chained) and scored automatically against what the market actually did._
 <!-- TRACK_RECORD:END -->
 
 <details>
