@@ -5,3 +5,4 @@ lxml>=5.2
 python-dotenv>=1.0
 matplotlib>=3.8
 tzdata>=2024.1
+requests-oauthlib>=1.3

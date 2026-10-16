@@ -104,19 +104,13 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         print(f"\n[加密预测台账] 提交失败（不影响复盘）：{exc}")
 
-    # 可选：推送到 Telegram（未配置则静默跳过）
+    # 可选：社交分发（X 预告 + Telegram 免费频道；未配置凭据则静默跳过 / 本地网络不可达）
     try:
-        from notify import send_telegram
+        from notify import push_social
         report_path = os.path.join(os.environ.get("REPORT_DIR", "reports"), f"加密复盘_{today}.md")
-        body = ""
-        if os.path.exists(report_path):
-            with open(report_path, encoding="utf-8") as fh:
-                body = fh.read()
-        digest = (f"🪙 加密复盘 | {today}\n\n" + body.strip()[:1200]
-                  + "\n\n📊 Crypto Track Record: crypto_ledger.jsonl（只追加、哈希链）")
-        print("[通知] " + send_telegram(digest))
+        print("[分发] " + push_social(report_path, title=f"🪙 加密复盘 | {today}"))
     except Exception as exc:  # noqa: BLE001
-        print(f"[通知] 推送失败（不影响复盘）：{exc}")
+        print(f"[分发] 推送失败（不影响复盘）：{exc}")
 
     usage = getattr(crew, "usage_metrics", None)
     if usage:
