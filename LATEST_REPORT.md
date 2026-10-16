@@ -1,4 +1,4 @@
-> Auto-published from `reports/美股复盘_2026-10-14.md` on 2026-10-15. [Track Record](TRACK_RECORD.md) · Research only, not investment advice.
+> Auto-published from `reports/美股复盘_2026-10-14.md` on 2026-10-17. [Track Record](TRACK_RECORD.md) · Research only, not investment advice.
 
 ---
 

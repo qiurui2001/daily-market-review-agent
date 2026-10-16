@@ -19,8 +19,10 @@ crypto_ledger.py —— 加密预测的「确定性」自动核验与命中率�
 
 from __future__ import annotations
 
+import json
 import os
 from datetime import datetime
+from pathlib import Path
 
 from crewai.tools import tool
 
@@ -59,6 +61,7 @@ from crypto_tools import _crypto_bars
 from tools import REPORT_DIR, _to_float
 
 CRYPTO_GLOB = "加密复盘_*.md"
+CRYPTO_LEDGER_FILE = Path(os.environ.get("CRYPTO_LEDGER_FILE", "crypto_ledger.jsonl"))
 # 加密点位数范围远宽于美股（BTC 可达 6 位数、部分币 0.xxx），单独设阈
 _MIN_LEVEL = float(os.environ.get("CRYPTO_PRED_MIN_LEVEL", "0.1") or "0.1")
 _MAX_LEVEL = float(os.environ.get("CRYPTO_PRED_MAX_LEVEL", "10000000") or "10000000")
@@ -161,7 +164,7 @@ def _items_from_text(text: str, report_date: str) -> list[dict]:
     return items
 
 
-def build_items(days_back: int = 30, exclude_date: str = "") -> list[dict]:
+def _items_from_reports(days_back: int = 30, exclude_date: str = "") -> list[dict]:
     ref = datetime.now()
     items: list[dict] = []
     for report_date, path in _iter_reports():
@@ -176,6 +179,38 @@ def build_items(days_back: int = 30, exclude_date: str = "") -> list[dict]:
         text = path.read_text(encoding="utf-8", errors="replace")
         items.extend(_items_from_text(text, report_date))
     return items
+
+
+def _items_from_ledger(days_back: int = 30, exclude_date: str = "") -> list[dict]:
+    """从已提交的加密哈希链台账读取预测条目（`reports/` 不可用时，例如 CI 上）。"""
+    if not CRYPTO_LEDGER_FILE.exists():
+        return []
+    ref = datetime.now()
+    out: list[dict] = []
+    for line in CRYPTO_LEDGER_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rec = json.loads(line)
+        except Exception:  # noqa: BLE001
+            continue
+        d = rec.get("date", "")
+        if exclude_date and d == exclude_date:
+            continue
+        try:
+            age = (ref - datetime.strptime(d, "%Y-%m-%d")).days
+        except ValueError:
+            age = 0
+        if age < 0 or age > days_back:
+            continue
+        out.extend(rec.get("items", []))
+    return out
+
+
+def build_items(days_back: int = 30, exclude_date: str = "") -> list[dict]:
+    """优先解析 reports/；若 reports/ 不可用（如 CI 上被 gitignore），回退到已提交的台账。"""
+    return _items_from_reports(days_back, exclude_date) or _items_from_ledger(days_back, exclude_date)
 
 
 def build_items_for_date(date: str) -> list[dict]:

@@ -1,4 +1,4 @@
-> Auto-published from `reports/加密复盘_2026-10-14.md` on 2026-10-15. [Crypto Track Record](CRYPTO_TRACK_RECORD.md) · Research only, not investment advice.
+> Auto-published from `reports/加密复盘_2026-10-14.md` on 2026-10-17. [Crypto Track Record](CRYPTO_TRACK_RECORD.md) · Research only, not investment advice.
 
 ---
 
