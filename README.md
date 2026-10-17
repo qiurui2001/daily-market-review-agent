@@ -24,14 +24,14 @@ objectively against what the market actually did.
 <!-- TRACK_RECORD:START -->
 _Last updated: **2026-10-17** · auto-generated from `prediction_ledger.jsonl`_
 
-**Overall hit rate: 59.4%** (95% CI 42–74) · **32 scored predictions · 3 trading days**
+**Overall hit rate: 51.4%** (95% CI 36–67) · **35 scored predictions · 3 trading days**
 
 | Capability | Hit rate | n |
 |---|---|---|
-| Direction | 67% | 21 |
-| Sector | 33% | 6 |
-| Event | 67% | 3 |
-| Risk | 50% | 2 |
+| Direction | 64% | 22 |
+| Sector | 17% | 6 |
+| Event | 0% | 3 |
+| Risk | 75% | 4 |
 
 **Latest calls**
 
