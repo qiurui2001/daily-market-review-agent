@@ -22,13 +22,13 @@ objectively against what the market actually did.
 ## 📊 Live Track Record
 
 <!-- TRACK_RECORD:START -->
-_Last updated: **2026-10-17** · auto-generated from `prediction_ledger.jsonl`_
+_Last updated: **2026-10-20** · auto-generated from `prediction_ledger.jsonl`_
 
-**Overall hit rate: 51.4%** (95% CI 36–67) · **35 scored predictions · 3 trading days**
+**Overall hit rate: 50.0%** (95% CI 34–66) · **34 scored predictions · 3 trading days**
 
 | Capability | Hit rate | n |
 |---|---|---|
-| Direction | 64% | 22 |
+| Direction | 62% | 21 |
 | Sector | 17% | 6 |
 | Event | 0% | 3 |
 | Risk | 75% | 4 |
