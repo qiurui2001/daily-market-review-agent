@@ -1,6 +1,6 @@
 # Live Track Record
 
-_Last updated: 2026-10-21 · 49 scored predictions · 4 trading days (2026-10-12 ~ 2026-10-19)_
+_Last updated: 2026-10-22 · 49 scored predictions · 4 trading days (2026-10-12 ~ 2026-10-19)_
 
 ## Overall
 
@@ -10,9 +10,9 @@ _Last updated: 2026-10-21 · 49 scored predictions · 4 trading days (2026-10-12
 
 | Group | Hit rate | n | 95% CI |
 |---|---|---|---|
-| Direction | 45.5% | 33 | [30, 62] |
+| Direction | 48.5% | 33 | [33, 65] |
 | Sector | 33.3% | 9 | [12, 65] |
-| Risk | 75.0% | 4 | [30, 95] |
+| Risk | 50.0% | 4 | [15, 85] |
 | Event | 66.7% | 3 | [21, 94] |
 
 ## By market regime
