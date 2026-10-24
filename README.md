@@ -22,14 +22,14 @@ objectively against what the market actually did.
 ## 📊 Live Track Record
 
 <!-- TRACK_RECORD:START -->
-_Last updated: **2026-10-23** · auto-generated from `prediction_ledger.jsonl`_
+_Last updated: **2026-10-24** · auto-generated from `prediction_ledger.jsonl`_
 
-**Overall hit rate: 55.1%** (95% CI 41–68) · **49 scored predictions · 4 trading days**
+**Overall hit rate: 59.2%** (95% CI 45–72) · **49 scored predictions · 4 trading days**
 
 | Capability | Hit rate | n |
 |---|---|---|
-| Direction | 61% | 33 |
-| Sector | 22% | 9 |
+| Direction | 64% | 33 |
+| Sector | 33% | 9 |
 | Event | 67% | 3 |
 | Risk | 75% | 4 |
 
@@ -38,7 +38,7 @@ _Last updated: **2026-10-23** · auto-generated from `prediction_ledger.jsonl`_
 | Date | Instrument | Call | Result |
 |---|---|---|---|
 | 2026-10-19 | S&P 500 | 1) 情景（次日 10/20）  ：🟡   中性·震荡回踩确认 43%  （7681… | ✅ Hit |
-| 2026-10-19 | Semis (SMH) | 🔴   悲观·反抽失败补跌 30%  （油价盘后扰动 + 半导体回吐，收盘破 768… | ❌ Miss |
+| 2026-10-19 | Semis (SMH) | 🔴   悲观·反抽失败补跌 30%  （油价盘后扰动 + 半导体回吐，收盘破 768… | ✅ Hit |
 | 2026-10-19 | S&P 500 | 🟢   乐观·缩量转放量续攻 27%  （收盘站稳 7736   且  量能 ≥32… | ✅ Hit |
 | 2026-10-19 | S&P 500 | 未来 1–2 周  ：🟡 宽幅双边震荡   42%  （标普 7617–7789、纳… | ✅ Hit |
 | 2026-10-19 | S&P 500 | 校准提示：次日维度  历史样本为 0  ，且震荡体制下方向命中率仅   35.3% … | ✅ Hit |
