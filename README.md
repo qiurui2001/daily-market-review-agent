@@ -22,7 +22,7 @@ objectively against what the market actually did.
 ## 📊 Live Track Record
 
 <!-- TRACK_RECORD:START -->
-_Last updated: **2026-10-31** · auto-generated from `prediction_ledger.jsonl`_
+_Last updated: **2026-11-03** · auto-generated from `prediction_ledger.jsonl`_
 
 **Overall hit rate: 66.7%** (95% CI 53–78) · **48 scored predictions · 4 trading days**
 
