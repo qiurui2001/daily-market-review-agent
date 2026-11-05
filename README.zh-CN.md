@@ -20,7 +20,7 @@
 ## 📊 Live Track Record（实时战绩）
 
 <!-- TRACK_RECORD:START -->
-_最后更新：**2026-11-04** · 由 `prediction_ledger.jsonl` 自动生成_
+_最后更新：**2026-11-05** · 由 `prediction_ledger.jsonl` 自动生成_
 
 **总体命中率 66.7%**（95% 置信区间 53–78）· **已核验 48 条 · 覆盖 4 个交易日**
 
