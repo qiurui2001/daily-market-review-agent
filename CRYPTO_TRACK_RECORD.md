@@ -1,4 +1,4 @@
-> Auto-generated from `crypto_ledger.jsonl` on 2026-11-05. Research only, not investment advice.
+> Auto-generated from `crypto_ledger.jsonl` on 2026-11-06. Research only, not investment advice.
 
 ---
 
